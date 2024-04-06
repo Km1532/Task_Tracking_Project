@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+    {% load static %}
+    <h1>Welcome to Task Management System</h1>
+    <nav>
+        <ul>
+            <li><a href="{% url 'task_list' %}">Task List</a></li>
+            <li><a href="{% url 'task_create' %}">Create Task</a></li>
+        </ul>
+    </nav>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+<script src="{% static 'js/date_converter.js' %}"></script>
+
+{% block title %}Create Task{% endblock %}
+
+{% block content %}
+    <h2>Create Task</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create</button>
+    </form>
+{% endblock %}

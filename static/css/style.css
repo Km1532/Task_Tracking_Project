@@ -1,0 +1,167 @@
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .main-container {
+        display: flex;
+        flex-direction: row;
+        min-height: 100vh;
+    }
+
+    header {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 20px;
+        flex: 0 0 auto;
+    }
+
+    main {
+        padding: 20px;
+        flex: 1;
+    }
+
+    footer {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 20px;
+        text-align: center;
+        flex: 0 0 auto;
+    }
+
+    .menu-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .conn_kval {
+        transform: scale(0.50);
+        height: 370px;
+        margin-top: 60px;
+        transform-origin: 50% 00%;
+        width: 300px;
+    }
+
+    .anim_1 {
+        animation: moove_1 2s ease-in-out infinite;
+        transform-origin: 39% 29%;
+        transform: rotate(0deg);
+    }
+
+    .anim_11 {
+        margin-top: 19px;
+        margin-left: -2px;
+        width: 336px;
+    }
+
+    @keyframes moove_1 {
+        0% {
+            transform: rotate(0deg)
+        }
+        50% {
+            transform: rotate(7deg)
+        }
+        100% {
+            transform: rotate(0deg)
+        }
+    }
+
+    .img_position {
+        position: absolute;
+        width: 340px;
+        height: 340px !important;
+        top: 50%;
+        margin-top: -145px;
+    }
+
+    .nav-item-home .nav-link {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        padding: 10px 20px;
+        vertical-align: middle; /* Додано для вирівнювання по вертикалі */
+    }
+
+    .nav-item-home .nav-link img {
+        margin-right: 10px;
+        max-width: 50px; 
+        height: auto;
+    }
+
+    .nav-item-home .nav-link span {
+        font-size: 20px; 
+        margin-left: 10px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 5px;
+    }
+
+    .navbar-nav {
+        list-style: none; /* Видаляємо маркери списку */
+        padding: 0; /* Встановлюємо нульовий padding */
+        margin: 0; /* Встановлюємо нульовий margin */
+        text-align: center; /* Додано для центрування тексту */
+    }
+    
+    .navbar-nav .nav-item {
+        margin-bottom: 3px; /* Встановлюємо відступ між вкладками */
+    }
+    .navbar-nav .nav-item a {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        padding: 10px 20px;
+        vertical-align: middle; /* Додано для вирівнювання по вертикалі */
+    }
+    .navbar-nav .nav-item a:hover {
+        background-color: #555; 
+    }
+
+    .nav-item-home .nav-link img.flag-icon {
+        margin-right: 5px; /* Зберігаємо відступ між іконкою і текстом */
+    }    
+    /* Зміни стилів для іконок у меню */
+    .navbar-nav .nav-item a img.flag-icon {
+        margin-right: 5px; /* Зберігаємо відступ між іконкою і текстом */
+    }
+
+
+    /*Прапор */
+    .language-selector {
+        position: relative;
+    }
+    
+    .flag-icon {
+        width: 25px; /* регулюйте розмір прапора за потреби */
+    }
+    
+    .language-menu {
+        display: none;
+        position: absolute;
+        top: 40px; /* Змінили значення top для зміщення прапорця вниз */
+        left: 0;
+        background-color: #fff; /* колір фону меню */
+        border: 1px solid #ccc; /* границі меню */
+        padding: 5px;
+    }
+    .language-menu ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .language-menu li {
+        margin-bottom: 5px;
+    }
+    
+    .language-menu a {
+        text-decoration: none;
+        color: #333; /* колір тексту */
+    }
+    
+    .language-menu a:hover {
+        color: #555; /* колір тексту при наведенні */
+    }
+    /* Прапор */
