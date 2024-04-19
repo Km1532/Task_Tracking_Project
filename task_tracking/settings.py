@@ -130,5 +130,5 @@ LOGOUT_REDIRECT_URL = ''
 USE_I18N = True
 LOGIN_REDIRECT_URL = 'account'
 USE_L10N = True
-
+LOGIN_URL = '/login/'
 USE_TZ = True

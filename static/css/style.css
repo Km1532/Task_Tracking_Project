@@ -1,167 +1,86 @@
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-    }
+@import 'bootstrap-5.3.3-dist/css/bootstrap.min.css';
 
-    .main-container {
-        display: flex;
-        flex-direction: row;
-        min-height: 100vh;
-    }
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
 
-    header {
-        background-color: #333;
-        color: #fff;
-        padding: 10px 20px;
-        flex: 0 0 auto;
-    }
+.main-container {
+    min-height: 100vh;
+}
 
-    main {
-        padding: 20px;
-        flex: 1;
-    }
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+}
 
-    footer {
-        background-color: #333;
-        color: #fff;
-        padding: 10px 20px;
-        text-align: center;
-        flex: 0 0 auto;
-    }
+/* Custom styles */
 
-    .menu-container {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-    }
+.nav-link {
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
 
-    .conn_kval {
-        transform: scale(0.50);
-        height: 370px;
-        margin-top: 60px;
-        transform-origin: 50% 00%;
-        width: 300px;
-    }
+.nav-link img {
+    max-width: 16px;
+    margin-right: 5px;
+}
 
-    .anim_1 {
-        animation: moove_1 2s ease-in-out infinite;
-        transform-origin: 39% 29%;
-        transform: rotate(0deg);
-    }
+.nav-link:hover {
+    color: #f8f9fa;
+}
 
-    .anim_11 {
-        margin-top: 19px;
-        margin-left: -2px;
-        width: 336px;
-    }
+.navbar-brand .navbar-logo {
+    width: 60px;
+    height: auto;
+}
 
-    @keyframes moove_1 {
-        0% {
-            transform: rotate(0deg)
-        }
-        50% {
-            transform: rotate(7deg)
-        }
-        100% {
-            transform: rotate(0deg)
-        }
-    }
+.dropdown-menu .dropdown-item img {
+    width: 16px;
+    height: auto;
+    margin-right: 5px;
+}
 
-    .img_position {
-        position: absolute;
-        width: 340px;
-        height: 340px !important;
-        top: 50%;
-        margin-top: -145px;
-    }
+.dropdown-menu {
+    border-top: none;
+    border-width: 0;
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+    border-color: transparent;
+    border-bottom: none;
+    background-color: transparent !important;
+    border-color: transparent !important;
+}
 
-    .nav-item-home .nav-link {
-        display: inline-flex;
-        align-items: center;
-        text-decoration: none;
-        padding: 10px 20px;
-        vertical-align: middle; /* Додано для вирівнювання по вертикалі */
-    }
+.navbar-nav {
+    border: none !important;
+}
 
-    .nav-item-home .nav-link img {
-        margin-right: 10px;
-        max-width: 50px; 
-        height: auto;
-    }
+.navbar-dark .navbar-nav .nav-link {
+    border: none !important;
+}
 
-    .nav-item-home .nav-link span {
-        font-size: 20px; 
-        margin-left: 10px;
-        display: inline-block;
-        vertical-align: middle;
-        margin-left: 5px;
-    }
+.navbar-nav {
+    border-bottom: 10px solid transparent !important;
+}
 
-    .navbar-nav {
-        list-style: none; /* Видаляємо маркери списку */
-        padding: 0; /* Встановлюємо нульовий padding */
-        margin: 0; /* Встановлюємо нульовий margin */
-        text-align: center; /* Додано для центрування тексту */
-    }
-    
-    .navbar-nav .nav-item {
-        margin-bottom: 3px; /* Встановлюємо відступ між вкладками */
-    }
-    .navbar-nav .nav-item a {
-        display: inline-flex;
-        align-items: center;
-        text-decoration: none;
-        padding: 10px 20px;
-        vertical-align: middle; /* Додано для вирівнювання по вертикалі */
-    }
-    .navbar-nav .nav-item a:hover {
-        background-color: #555; 
-    }
+.navbar-nav .nav-item {
+    padding: 0.5rem 1rem; /* Задаємо відступи для кожного пункту меню */
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-    .nav-item-home .nav-link img.flag-icon {
-        margin-right: 5px; /* Зберігаємо відступ між іконкою і текстом */
-    }    
-    /* Зміни стилів для іконок у меню */
-    .navbar-nav .nav-item a img.flag-icon {
-        margin-right: 5px; /* Зберігаємо відступ між іконкою і текстом */
-    }
+.navbar {
+    margin-bottom: auto;
+}
 
-
-    /*Прапор */
-    .language-selector {
-        position: relative;
-    }
-    
-    .flag-icon {
-        width: 25px; /* регулюйте розмір прапора за потреби */
-    }
-    
-    .language-menu {
-        display: none;
-        position: absolute;
-        top: 40px; /* Змінили значення top для зміщення прапорця вниз */
-        left: 0;
-        background-color: #fff; /* колір фону меню */
-        border: 1px solid #ccc; /* границі меню */
-        padding: 5px;
-    }
-    .language-menu ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-    
-    .language-menu li {
-        margin-bottom: 5px;
-    }
-    
-    .language-menu a {
-        text-decoration: none;
-        color: #333; /* колір тексту */
-    }
-    
-    .language-menu a:hover {
-        color: #555; /* колір тексту при наведенні */
-    }
-    /* Прапор */
+.main-content {
+    margin-top: 100px; /* Розташовуємо контент вище */
+}

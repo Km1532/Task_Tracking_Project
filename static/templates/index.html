@@ -7,10 +7,17 @@
 {% block content %}
     {% load static %}
     <h1>Welcome to Task Management System</h1>
+    <h2>Why our service with tasks?</h2>
+    <p>Our Task Management System is designed to help you organize and manage your tasks effectively. Whether you're working on personal projects or collaborating with a team, our system provides the tools you need to stay organized, prioritize tasks, and track progress.</p>
+    <h3>Now we will show why you should choose our service:</h3>
     <nav>
         <ul>
-            <li><a href="{% url 'task_list' %}">Task List</a></li>
-            <li><a href="{% url 'task_create' %}">Create Task</a></li>
+            <li><a href="{% url 'task_list' %}">View Tasks</a> - View all tasks currently in the system.</li>
+            <li><a href="{% url 'task_create' %}">Create Task</a> - Create a new task to be added to the system.</li>
+            <li><a href="{% url 'about_us' %}">About Us</a> - Learn more about our company and mission.</li>
+            <li><a href="{% url 'news' %}">News</a> - Stay updated with the latest news and announcements.</li>
+            <li><a href="{% url 'feedback' %}">Feedback</a> - Provide feedback on our services.</li>
+            <li><a href="{% url 'account' %}">Account</a> - Manage your account settings and preferences.</li>
         </ul>
     </nav>
 {% endblock %}

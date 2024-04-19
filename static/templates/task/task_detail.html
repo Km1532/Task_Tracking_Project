@@ -1,13 +1,94 @@
+<!-- task_detail.html -->
 {% extends 'base.html' %}
 
 {% block title %}Task Detail{% endblock %}
 
 {% block content %}
-    <h2>Task Detail</h2>
-    <p><strong>Title:</strong> {{ task.title }}</p>
-    <p><strong>Description:</strong> {{ task.description }}</p>
-    <p><strong>Status:</strong> {{ task.status }}</p>
-    <p><strong>Priority:</strong> {{ task.priority }}</p>
-    <p><strong>Due Date:</strong> {{ task.due_date }}</p>
-    <p><strong>Assigned To:</strong> {{ task.assigned_to }}</p>
+    {% if task %}
+        <h2>Task Detail</h2>
+        <p><strong>Title:</strong> {{ task.title }}</p>
+        <p><strong>Description:</strong> {{ task.description }}</p>
+        <p><strong>Status:</strong> {{ task.status }}</p>
+        <p><strong>Priority:</strong> {{ task.priority }}</p>
+        <p><strong>Due Date:</strong> {{ task.due_date }}</p>
+        <p><strong>Assigned To:</strong> {{ task.assigned_to }}</p>
+
+        <form method="post" action="{% url 'start_task' pk=task.pk %}">
+            {% csrf_token %}
+            <button type="submit" name="start_task" class="btn btn-primary">Start</button>
+        </form>
+        
+        <h3>Comments</h3>
+        {% if task.comments.all %}
+            {% for comment in task.comments.all %}
+                <p><strong>User:</strong> {{ comment.user }}</p>
+                <p>{{ comment.text }}</p>
+                {% if request.user == comment.user %}
+                    <a href="{% url 'edit_comment' pk=comment.pk %}">Edit</a> 
+                    <a href="{% url 'comment_delete' pk=task.pk comment_pk=comment.pk %}">Delete</a>
+                {% endif %}
+                <p>Likes: <span class="likes-count">{{ comment.likes.count }}</span></p>
+                <form method="post" action="{% url 'like_comment' pk=comment.pk %}" class="like-form">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-primary like-btn {% if request.user in comment.likes.all %}liked{% endif %}"
+                    data-comment-pk="{{ comment.pk }}"
+                    data-url="{% url 'like_comment' pk=comment.pk %}">
+                    {% if request.user in comment.likes.all %}
+                        <i class="fas fa-thumbs-up"></i> Unlike
+                    {% else %}
+                        <i class="far fa-thumbs-up"></i> Like
+                    {% endif %}
+                </button>                
+                </form>
+                <hr>
+            {% endfor %}
+        {% else %}
+            <p>No comments yet.</p>
+        {% endif %}
+
+        <form method="post" action="{% url 'add_comment_to_task' pk=task.pk %}">
+            {% csrf_token %}
+            <input type="hidden" name="task_id" value="{{ task.pk }}">
+            {{ comment_form.as_p }}
+            <button type="submit" class="btn btn-primary">Add Comment</button>
+        </form>
+
+    {% endif %}
+{% endblock %}
+
+
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(".like-btn").click(function(event) {
+    event.preventDefault();
+    var likeBtn = $(this);
+    var comment_pk = likeBtn.data("comment-pk");
+    var url = likeBtn.data("url");
+    var csrf_token = "{{ csrf_token }}";
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: { 'pk': comment_pk },
+        headers: { "X-CSRFToken": csrf_token },
+        dataType: 'json',
+        success: function(data) {
+            if (data.liked) {
+                likeBtn.addClass("liked");
+                likeBtn.text("Unlike");
+            } else {
+                likeBtn.removeClass("liked");
+                likeBtn.text("Like");
+            }
+            var likesCountElement = likeBtn.siblings(".likes-count");
+            likesCountElement.text(data.count);
+            window.location.href = "{{ request.path }}";
+        },
+        error: function(xhr, errmsg, err) {
+            console.log("Failed to send POST request.");
+        }
+    });
+});
+</script>
 {% endblock %}
