@@ -1,6 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+TASK_TYPES = (
+    ('testing', 'Testing'),
+    ('photo_submission', 'Photo Submission'),
+)
+
 class Task(models.Model):
     STATUS_CHOICES = (
         ('todo', 'To Do'),
@@ -21,7 +26,11 @@ class Task(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     assigned_to = models.ForeignKey(User, on_delete=models.CASCADE)
-    
+    task_type = models.CharField(max_length=100, choices=TASK_TYPES, default='testing') 
+
+    def __str__(self):
+        return self.title
+   
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -52,3 +61,11 @@ class CommentLike(models.Model):
 
     def __str__(self):
         return f'Like by {self.user} on {self.comment}'
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    picture = models.ImageField(upload_to='profile_pictures', default='baseavatar.png')
+
+    def __str__(self):
+        return f'{self.user.username} Profile'

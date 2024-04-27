@@ -16,9 +16,13 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User 
 from django.urls import reverse
 from django.views.decorators.http import require_POST
+from .forms import ProfileForm
+from django.contrib.auth.models import User
+from .models import Profile
+from datetime import datetime
 
 class UserIsOwnerMixin:
     def dispatch(self, request, *args, **kwargs):
@@ -78,7 +82,9 @@ def task_detail(request, pk):
     else:
         form = CommentForm()
 
-    return render(request, 'task_detail.html', {'task': task, 'comment_form': comment_form})
+    user_avatar = request.user.profile.picture if hasattr(request.user, 'profile') else None
+
+    return render(request, 'task_detail.html', {'task': task, 'comment_form': comment_form, 'user_avatar': user_avatar})
 
 class TaskListView(LoginRequiredMixin, ListView):
     model = Task
@@ -148,17 +154,45 @@ class TaskDetailView(DetailView):
             context = self.get_context_data()
             context['comment_form'] = form
             return render(request, self.template_name, context)
+        if task.status != 'Done' and task.due_date < datetime.now().date():
+            task.status = 'Done'
+            task.save()
+        elif task.status == 'Done' and task.due_date >= datetime.now().date():
+            task.status = 'Undone'
+            task.save()
+
+        return super().post(request, *args, **kwargs)
 
 
 def index_view(request):
     return render(request, 'index.html')
 
+@login_required
 def account_view(request):
-    if request.user.is_authenticated:
-        return render(request, 'account.html')
+    if request.method == 'POST':
+        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        if profile_form.is_valid():
+            profile = profile_form.save(commit=False)
+            profile.user = request.user
+            profile.save()
+            request.user.first_name = request.POST.get('first_name')
+            request.user.last_name = request.POST.get('last_name')
+            request.user.username = request.POST.get('username')
+            request.user.email = request.POST.get('email')
+            request.user.save()
+            return redirect('account')
     else:
-        return redirect('login')
+        profile_form = ProfileForm(instance=request.user.profile, initial={
+            'first_name': request.user.first_name,
+            'last_name': request.user.last_name,
+            'username': request.user.username,
+            'email': request.user.email
+        })
+    
+    return render(request, 'account.html', {'profile_form': profile_form})
 
+    
+    
 def contacts_view(request):
     return render(request, 'contacts.html')
 
@@ -218,12 +252,9 @@ def register_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
+            user = form.save()
             login(request, user)
-            return redirect('index')
+            return redirect('index')  
     else:
         form = UserCreationForm()
     return render(request, 'registration.html', {'form': form})
@@ -244,7 +275,7 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('account')
+            return redirect('account') 
     else:
         form = AuthenticationForm()
 
@@ -253,11 +284,13 @@ def login_view(request):
 def start_task(request, pk):
     if request.method == 'POST':
         task = get_object_or_404(Task, pk=pk)
-        task.status = 'In Progress'
-        task.save()
+        if task.status != 'In Progress':
+            task.status = 'In Progress'
+            task.save()
         return redirect('task_detail', pk=pk)
     else:
         return HttpResponseForbidden()
+
 
 def my_password_reset(request):
     if request.method == 'POST':
@@ -331,3 +364,5 @@ def delete_comment(request, pk):
     if request.user == comment.user:
         comment.delete()
     return redirect(reverse('task_detail', kwargs={'pk': task_pk}))
+
+

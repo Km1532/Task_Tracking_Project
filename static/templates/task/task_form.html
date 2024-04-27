@@ -9,6 +9,37 @@
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Create</button>
+
+        <div>
+            <label for="id_task_type">Task Type:</label>
+            <select name="task_type" id="id_task_type">
+                <option value="testing">Testing</option>
+                <option value="photo_submission">Photo Submission</option>
+            </select>
+        </div>
+
+        <div style="margin-top: 20px;"> 
+            <button type="submit">Create</button>
+        </div>
     </form>
+    
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $("#id_due_date").datepicker({
+                dateFormat: 'yy-mm-dd',
+                minDate: 0,
+                showButtonPanel: true,
+                closeText: 'Close',
+                currentText: 'Today',
+                prevText: 'Prev',
+                nextText: 'Next',
+                monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                dayNamesMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
+            });
+        });
+    </script>
 {% endblock %}

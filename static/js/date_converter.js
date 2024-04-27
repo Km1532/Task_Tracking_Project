@@ -65,3 +65,30 @@ document.addEventListener("DOMContentLoaded", function() {
         return cookieValue;
     }
 });
+
+$(document).ready(function() {
+    $('#id_due_date').datepicker({
+        dateFormat: 'yy-mm-dd', 
+        onSelect: function(dateText) {
+            var convertedDate = window.convertDateFormat(dateText);
+            $('#id_due_date').val(convertedDate);
+        }
+    });
+});
+
+$(".language-item").click(function() {
+    var languageCode = $(this).data("language-code");
+    var csrfToken = getCookie("csrftoken"); 
+    $.ajax({
+        url: "/set_language/", 
+        type: "POST",
+        data: { language: languageCode }, 
+        headers: { "X-CSRFToken": csrfToken }, 
+        success: function(data) {
+            location.reload(); 
+        },
+        error: function(xhr, errmsg, err) {
+            console.log("Failed to set language.");
+        }
+    });
+});

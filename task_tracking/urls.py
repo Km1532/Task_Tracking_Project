@@ -25,6 +25,7 @@ from django.conf.urls.static import static
 from django.contrib.auth.decorators import login_required
 from trouble.models import Comment 
 from trouble.views import (CommentDeleteView,CommentUpdateView, TaskCreateView,TaskListView,TaskDetailView,start_task,add_comment_to_task,delete_comment,edit_comment,my_password_reset,)
+from trouble import views  
 
 
 urlpatterns = [
@@ -54,6 +55,7 @@ urlpatterns = [
     path('task/comment/<int:pk>/delete/', delete_comment, name='delete_comment'),
     path('like/comment/<int:pk>/', trouble_views.like_comment, name='like_comment'),
     path('set_language/', trouble_views.set_language, name='set_language'),
+    path('task/<int:pk>/start/', trouble_views.start_task, name='start_task'),
 ]
 
 if settings.DEBUG:

@@ -18,8 +18,8 @@
                         {% csrf_token %}
                         <div class="row justify-content-center">
                             <div class="col-md-12 mb-3">
-                                {% if user.image %}
-                                    <img src="{{ user.image.url }}"
+                                {% if request.user.profile.image %}
+                                    <img src="{{ request.user.profile.image.url }}"
                                         alt="User Avatar" class="img-fluid rounded-circle"
                                         style="max-width: 150px;">
                                 {% else %}
@@ -30,8 +30,8 @@
                                 <input type="file" class="form-control mt-3" id="id_image"
                                     name='image'
                                     accept="image/*">
-                                    {% if form.image.errors %}
-                                    <div class="alert alert-danger alert-dismissible fade show">{{form.image.errors}}</div>
+                                    {% if profile_form.image.errors %}
+                                    <div class="alert alert-danger alert-dismissible fade show">{{profile_form.image.errors}}</div>
                                     {% endif %}
                             </div>
                             <div class="col-md-12 mb-3">
@@ -39,44 +39,32 @@
                                 <input type="text" class="form-control" id="id_first_name"
                                     name="first_name"
                                     placeholder="Enter your first name"
-                                    value="{{ form.first_name.value }}"
+                                    value="{{ request.user.first_name }}"
                                     required>
-                                    {% if form.first_name.errors %}
-                                    <div class="alert alert-danger alert-dismissible fade show">{{form.first_name.errors}}</div>
-                                    {% endif %}
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label for="id_last_name" class="form-label">Last Name*</label>
                                 <input type="text" class="form-control" id="id_last_name"
                                     name="last_name"
                                     placeholder="Enter your last name"
-                                    value="{{ form.last_name.value }}"
+                                    value="{{ request.user.last_name }}"
                                     required>
-                                    {% if form.last_name.errors %}
-                                    <div class="alert alert-danger alert-dismissible fade show">{{form.last_name.errors}}</div>
-                                    {% endif %}
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label for="id_username" class="form-label">Username*</label>
                                 <input type="text" class="form-control" id="id_username"
                                     name="username"
                                     placeholder="Enter your username"
-                                    value="{{ form.username.value }}"
+                                    value="{{ request.user.username }}"
                                     required>
-                                    {% if form.username.errors %}
-                                    <div class="alert alert-danger alert-dismissible fade show">{{form.username.errors}}</div>
-                                    {% endif %}
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label for="id_email" class="form-label">Email*</label>
                                 <input type="email" class="form-control" id="id_email"
                                     name="email"
                                     placeholder="Enter your email"
-                                    value="{{ form.email.value }}"
+                                    value="{{ request.user.email }}"
                                     required>
-                                    {% if form.email.errors %}
-                                    <div class="alert alert-danger alert-dismissible fade show">{{form.email.errors}}</div>
-                                    {% endif %}
                                 </div>
                                 <div class="col-md-12 mb-3 text-center">
                                     <button type="submit" class="btn btn-dark">Save</button>
