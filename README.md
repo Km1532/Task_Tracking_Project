@@ -26,8 +26,7 @@ Task_Tracking_Project is a task management system developed for educational purp
 
 1. Clone the repository:
 
-git clone https://github.com/your-username/Task_Tracking_Project.git
-
+git clone https://github.com/Km1532/Task_Tracking_Project.git
 
 2. Create a virtual environment (optional):
 
