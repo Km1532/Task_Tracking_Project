@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    User Profile
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-5.3.3-dist/css/bootstrap.min.css' %}">
+<script src="{% static 'js/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js' %}"></script>
+<div class="row justify-content-center">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class=" bg-white p-4 mb-4 mx-2 rounded custom-shadow text-center">
+                    <h3 class="text-center mb-4">User Profile</h3>
+                    <form action="{% url 'account' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row justify-content-center">
+                            <div class="col-md-12 mb-3">
+                                {% if request.user.profile.image %}
+                                    <img src="{{ request.user.profile.image.url }}"
+                                        alt="User Avatar" class="img-fluid rounded-circle"
+                                        style="max-width: 150px;">
+                                {% else %}
+                                    <img src="{% static 'images/baseavatar.png' %}"
+                                        alt="User Avatar" class="img-fluid rounded-circle"
+                                        style="max-width: 150px;">
+                                {% endif %}
+                                <input type="file" class="form-control mt-3" id="id_image"
+                                    name='image'
+                                    accept="image/*">
+                                    {% if profile_form.image.errors %}
+                                    <div class="alert alert-danger alert-dismissible fade show">{{profile_form.image.errors}}</div>
+                                    {% endif %}
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="id_first_name" class="form-label">First Name*</label>
+                                <input type="text" class="form-control" id="id_first_name"
+                                    name="first_name"
+                                    placeholder="Enter your first name"
+                                    value="{{ request.user.first_name }}"
+                                    required>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="id_last_name" class="form-label">Last Name*</label>
+                                <input type="text" class="form-control" id="id_last_name"
+                                    name="last_name"
+                                    placeholder="Enter your last name"
+                                    value="{{ request.user.last_name }}"
+                                    required>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="id_username" class="form-label">Username*</label>
+                                <input type="text" class="form-control" id="id_username"
+                                    name="username"
+                                    placeholder="Enter your username"
+                                    value="{{ request.user.username }}"
+                                    required>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="id_email" class="form-label">Email*</label>
+                                <input type="email" class="form-control" id="id_email"
+                                    name="email"
+                                    placeholder="Enter your email"
+                                    value="{{ request.user.email }}"
+                                    required>
+                                </div>
+                                <div class="col-md-12 mb-3 text-center">
+                                    <button type="submit" class="btn btn-dark">Save</button>
+                                </div>
+                                <div class="col-md-12 mb-3 text-center">
+                                    <a href="{% url 'logout' %}?next={% url 'index' %}" class="btn btn-danger">Logout</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

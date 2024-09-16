@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Registration
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-5.3.3-dist/css/bootstrap.min.css' %}">
+<script src="{% static 'js/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const togglePassword = document.getElementById('show_password');
+        const passwordField = document.getElementById('id_password1');
+
+        togglePassword.addEventListener('click', function() {
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            this.innerHTML = type === 'password' ? '<i class="bi bi-eye-fill"></i>' : '<i class="bi bi-eye-slash-fill"></i>';
+        });
+    });
+</script>
+<div class="row justify-content-center">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class=" bg-white p-4 mb-4 mx-2 rounded custom-shadow text-center">
+                    <h3 class="text-center mb-4">Registration</h3>
+                    <form method="post" action="{% url 'register' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row justify-content-center">
+                            <div class="col-md-12 mb-3">
+                                <label for="id_first_name" class="form-label">First Name*</label>
+                                <input type="text" class="form-control" id="id_first_name" name="first_name" placeholder="Enter your first name" value="{{ request.POST.first_name }}" required>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="id_last_name" class="form-label">Last Name*</label>
+                                <input type="text" class="form-control" id="id_last_name" name="last_name" placeholder="Enter your last name" value="{{ request.POST.last_name }}" required>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="id_username" class="form-label">Username*</label>
+                                <input type="text" class="form-control" id="id_username" name="username" placeholder="Enter your username" value="{{ request.POST.username }}" required>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="id_email" class="form-label">Email*</label>
+                                <input type="email" class="form-control" id="id_email" name="email" placeholder="Enter your email" value="{{ request.POST.email }}" required>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="id_password1" class="form-label">Password*</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="id_password1" name="password1" placeholder="Enter your password" required>
+                                    <button class="btn btn-outline-secondary" type="button" id="show_password">
+                                        <i class="bi bi-eye-fill"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="id_password2" class="form-label">Confirm Password*</label>
+                                <input type="password" class="form-control" id="id_password2" name="password2" placeholder="Confirm your password" required>
+                            </div>                            
+                            <div class="col-md-12 mb-3 text-center">
+                                <button type="submit" class="btn btn-dark">Sign up</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="mt-2">
+                        <p>Already have an account? <a href="{% url 'login' %}">Log in here</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

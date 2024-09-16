@@ -1,0 +1,86 @@
+@import 'bootstrap-5.3.3-dist/css/bootstrap.min.css';
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.main-container {
+    min-height: 100vh;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+}
+
+/* Custom styles */
+
+.nav-link {
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+
+.nav-link img {
+    max-width: 16px;
+    margin-right: 5px;
+}
+
+.nav-link:hover {
+    color: #f8f9fa;
+}
+
+.navbar-brand .navbar-logo {
+    width: 60px;
+    height: auto;
+}
+
+.dropdown-menu .dropdown-item img {
+    width: 16px;
+    height: auto;
+    margin-right: 5px;
+}
+
+.dropdown-menu {
+    border-top: none;
+    border-width: 0;
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+    border-color: transparent;
+    border-bottom: none;
+    background-color: transparent !important;
+    border-color: transparent !important;
+}
+
+.navbar-nav {
+    border: none !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    border: none !important;
+}
+
+.navbar-nav {
+    border-bottom: 10px solid transparent !important;
+}
+
+.navbar-nav .nav-item {
+    padding: 0.5rem 1rem; /* Задаємо відступи для кожного пункту меню */
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.navbar {
+    margin-bottom: auto;
+}
+
+.main-content {
+    margin-top: 100px; /* Розташовуємо контент вище */
+}

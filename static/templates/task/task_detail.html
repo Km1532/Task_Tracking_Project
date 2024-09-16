@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load static %}
+<script src="{% static 'js/date_converter.js' %}"></script>
+
+{% block title %}Task Detail{% endblock %}
+
+{% block content %}
+    {% if task %}
+        <h2>Task Detail</h2>
+        <p><strong>Title:</strong> {{ task.title }}</p>
+        <p><strong>Description:</strong> {{ task.description }}</p>
+        <p><strong>Status:</strong> {{ task.status }}</p>
+        <p><strong>Priority:</strong> {{ task.priority }}</p>
+        <p><strong>Due Date:</strong> {{ task.due_date }}</p>
+        <p><strong>Assigned To:</strong> {{ task.assigned_to }}</p>
+        <p><strong>Type:</strong> {{ task.task_type }}</p> 
+
+        <form method="post" action="{% url 'start_task' pk=task.pk %}">
+            {% csrf_token %}
+            {% if task.status == "In Progress" %}
+                <button type="submit" class="btn btn-primary continue-btn">Continue</button>
+            {% else %}
+                <button type="submit" class="btn btn-primary start-btn">Start</button>
+            {% endif %}
+        </form>        
+        </form>        
+        <h3>Comments</h3>
+        {% if task.comments.all %}
+            {% for comment in task.comments.all %}
+                <div class="comment">
+                    <div class="user-avatar" style="float:left; margin-right: 10px;">
+                        {% if comment.user.profile.image %}
+                            <img src="{{ comment.user.profile.image.url }}" alt="User Avatar" class="avatar">
+                        {% else %}
+                            <img src="{% static 'images/baseavatar.png' %}" alt="Default Avatar" class="avatar" style="max-width: 50px; max-height: 50px;">
+                        {% endif %}
+                    </div>
+                    <div class="comment-content">
+                        <p><strong>User:</strong> {{ comment.user }}</p>
+                        <p>{{ comment.text }}</p>
+                        {% if request.user == comment.user %}
+                            <a href="{% url 'edit_comment' pk=comment.pk %}">Edit</a> 
+                            <a href="{% url 'comment_delete' pk=task.pk comment_pk=comment.pk %}">Delete</a>
+                        {% endif %}
+                        <p>Likes: <span class="likes-count">{{ comment.likes.count }}</span></p>
+                        <form method="post" action="{% url 'like_comment' pk=comment.pk %}" class="like-form">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-primary like-btn {% if request.user in comment.likes.all %}liked{% endif %}"
+                            data-comment-pk="{{ comment.pk }}"
+                            data-url="{% url 'like_comment' pk=comment.pk %}">
+                            {% if request.user in comment.likes.all %}
+                                <i class="fas fa-thumbs-up"></i> Unlike
+                            {% else %}
+                                <i class="far fa-thumbs-up"></i> Like
+                            {% endif %}
+                        </button>                
+                        </form>
+                    </div>
+                </div>
+                <hr>
+            {% endfor %}
+        {% else %}
+            <p>No comments yet.</p>
+        {% endif %}
+                
+        <form method="post" action="{% url 'add_comment_to_task' pk=task.pk %}">
+            {% csrf_token %}
+            <input type="hidden" name="task_id" value="{{ task.pk }}">
+            {{ comment_form.as_p }}
+            <button type="submit" class="btn btn-primary">Add Comment</button>
+        </form>
+        
+    {% endif %}
+{% endblock %}
+{% if task.status != "Done" %}
+<form method="post" data-task-pk="{{ task.pk }}" data-status="{% if task.status == 'In Progress' %}Continue{% else %}Start{% endif %}" class="status-form">
+    {% csrf_token %}
+    <button type="button" class="btn btn-primary {% if task.status == 'In Progress' %}continue-btn{% else %}start-btn{% endif %}">
+        {% if task.status == "In Progress" %}
+            Continue
+        {% else %}
+            Start
+        {% endif %}
+    </button>
+</form>
+{% endif %}
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(".like-btn").click(function(event) {
+    event.preventDefault();
+    var likeBtn = $(this);
+    var comment_pk = likeBtn.data("comment-pk");
+    var url = likeBtn.data("url");
+    var csrf_token = "{{ csrf_token }}";
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: { 'pk': comment_pk },
+        headers: { "X-CSRFToken": csrf_token },
+        dataType: 'json',
+        success: function(data) {
+            if (data.liked) {
+                likeBtn.addClass("liked");
+                likeBtn.text("Unlike");
+            } else {
+                likeBtn.removeClass("liked");
+                likeBtn.text("Like");
+            }
+            var likesCountElement = likeBtn.siblings(".likes-count");
+            likesCountElement.text(data.count);
+            window.location.href = "{{ request.path }}";
+        },
+        error: function(xhr, errmsg, err) {
+            console.log("Failed to send POST request.");
+        }
+    });
+});
+$(document).ready(function() {
+    $(".start-btn, .continue-btn").click(function(event) {
+        event.preventDefault(); 
+        var url = $(this).closest("form").attr("action");
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: $(this).closest("form").serialize(),
+            success: function(response) {
+                window.location.href = response.redirect_url; 
+            },
+            error: function(xhr, errmsg, err) {
+                console.log("Failed to send POST request.");
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

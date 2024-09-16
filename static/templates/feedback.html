@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Feedback
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1><strong>{{ content }}</strong></h1>
+    
+    <h2>Add review</h2>
+    <form method="post" action="{% url 'feedback' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="nickname" class="form-label">Nickname</label>
+            <input type="text" class="form-control" id="nickname" name="nickname" value="{{ request.user.username }}" readonly>
+        </div>
+           
+        <div class="mb-3">
+            <label for="text" class="form-label">Your Feedback:</label>
+            <textarea class="form-control" id="text" name="text" rows="3" required></textarea>
+        </div>
+        <div class="mb-3">
+            <p>If you liked everything, you can put a star:</p>
+            <div class="rating">
+                {% for i in "1" %}
+                    <input type="radio" id="star{{ i }}" name="rating" value="{{ i }}">
+                    <label for="star{{ i }}"> &#9733; </label>
+                {% endfor %}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Add review</button>
+    </form>
+    <h2>Reviews:</h2>
+    {% if feedbacks %}
+        {% for feedback in feedbacks %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-auto">
+                            {% if feedback.user.profile.image %}
+                                <img src="{{ feedback.user.profile.image.url }}" alt="User Avatar" class="avatar">
+                            {% else %}
+                                <img src="{% static 'images/baseavatar.png' %}" alt="Default Avatar" class="avatar" style="max-width: 50px; max-height: 50px;">
+                            {% endif %}
+                        </div>
+                        <div class="col">
+                            <h5 class="card-title">{{ feedback.user.username }}</h5>  
+                            <p class="card-text">{{ feedback.text }}</p>
+                            <p class="card-text">{{ feedback.created_at }}</p>
+                        </div>
+                    </div>
+                </div>                                       
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>There are currently no reviews</p>
+    {% endif %}
+</div>
+{% endblock %}

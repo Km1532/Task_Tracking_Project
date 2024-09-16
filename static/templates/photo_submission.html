@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+<script src="{% static 'js/date_converter.js' %}"></script>
+
+{% block title %}Create Photo Submission Task{% endblock %}
+
+{% block content %}
+    <h2>Create Photo Submission Task</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <div>
+            <label for="id_task_type">Task Type:</label>
+            <select name="task_type" id="id_task_type">
+                <option value="testing">Testing</option>
+                <option value="photo_submission" selected>Photo Submission</option>
+            </select>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <label for="id_test_instructions">Test Instructions:</label>
+            <textarea name="test_instructions" id="id_test_instructions" rows="4" cols="50"></textarea>
+            <!-- Вставте інструкції для завантаження фото -->
+        </div>
+
+        <div style="margin-top: 20px;"> 
+            <button type="submit">Create</button>
+        </div>
+    </form>
+    
+    <!-- Додатковий JavaScript код для вибору дати -->
+    <!-- Вставте JavaScript код тут -->
+{% endblock %}

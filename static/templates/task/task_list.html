@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Task List{% endblock %}
+
+{% block content %}
+    <h2>Task List</h2>
+    <form method="GET" action="" class="mb-3">
+        <div class="form-row">
+            <div class="col-md-4 mb-3">
+                {{ filter_form.status.label_tag }}
+                {{ filter_form.status }}
+            </div>
+            <div class="col-md-4 mb-3">
+                {{ filter_form.priority.label_tag }}
+                {{ filter_form.priority }}
+            </div>
+            <div class="col-md-4 mb-3">
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </div>
+    </form>
+
+    <ul class="list-group">
+        {% for task in tasks %}
+            <li class="list-group-item">
+                <a href="{% url 'task_detail' task.id %}">{{ task.title }}</a> - {{ task.description }} - Due Date: {{ task.due_date }}
+            </li>
+        {% empty %}
+            <li class="list-group-item">No tasks found.</li>
+        {% endfor %}
+    </ul>
+
+    <h2 class="mt-5">Create Task</h2>
+    <form method="post" action="{% url 'task_create' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Create</button>
+    </form>    
+{% endblock %}
